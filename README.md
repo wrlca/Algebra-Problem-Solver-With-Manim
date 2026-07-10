@@ -41,12 +41,6 @@ This Manim math animation tool has 3 independent operating modes controlled by C
 2. Video Render Mode: Read JSON config, auto draw function graphs, moving points & algebra animations, export MP4 video.
 3. Script Export Mode: Split every graph step into standalone `.py` Manim files to avoid layer overlay bugs.
 
-## Step 1: Pre-Install Dependencies
-Run these commands in terminal first:
-```bash
-# Core animation & LLM HTTP client
-pip install manim requests
-```
 ### Local LLM Choice (Required for AI generation)
 #### Option 1: Ollama (Recommended)
 1. Install Ollama official client
