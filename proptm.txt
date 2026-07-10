@@ -1,0 +1,211 @@
+
+## **Overall Purpose**
+You must strictly follow the complete JSON syntax, field rules, and animation logic below to output a step-by-step JSON file that can be rendered by the 0-0-4.py program. The program will read the JSON and generate function image animations, moving point animations, and algebraic text step-by-step demonstrations, supporting independent Manim script export. All fields are essential and must be strictly formatted.
+
+## **I. Prerequisite Basic Constraints (Must be obeyed)**
+
+**File Encoding**: UTF-8, standard JSON, no comments, no extra commas, boolean values lowercase `true/false`, strings use double quotes.
+
+**Mathematical Expression Rules**
+- Exponents use `**` (automatically converted to render syntax)
+- Absolute value: `abs()`
+- Trigonometric functions: `sin(x)`, `cos(x)`, `tan(x)`
+- Square roots: `sqrt(x)`
+
+**Supported Built-in Safe Functions**: `abs`, `sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, `pow`, `floor`, `ceil`, `round`, `max`, `min`
+
+**Variables**: Allowed only single-letter lowercase. Multiple variables must use `variables` configuration for initial values and animation endpoints.
+
+**Rendering Core Logic Distinction**
+- **graph_step**: Graph with axes, function curves, moving/static/zero point animations
+- **Ordinary steps (no `graph` field)**: Only text formulas and explanations, no canvas images
+
+**Image Fade Out Control**: Each `graph_step` independently configured with `fade_out` control whether images are cleared after this step ends, solving image overlap/disappearance bugs.
+
+---
+
+## **II. JSON Root Fields (Global Universal, Only One Set for Entire File)**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | String | Yes | Video top-left fixed small title text, pure text, not LaTeX |
+| `iner` | String | Yes | LaTeX math formula, displayed top-left permanently on page, never disappears |
+| `solve_steps` | Array [Object] | Yes | Step-by-step solution process list, each item is 1 step object, ordered from top to bottom |
+
+**Table**
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | String | Yes | Video top-left top title text, pure text, not LaTeX |
+| `iner` | String | Yes | LaTeX math formula, permanently displayed top-left on page throughout, never disappears |
+| `solve_steps` | Array [Object] | Yes | Step-by-step solution process list, each item is 1 step object, ordered from top to bottom |
+
+---
+
+## **III. General Fields for All solve_steps Objects (All Steps Support)**
+
+Each object within `solve_steps` must uniformly contain the following basic fields:
+
+| Field | Type | Required | Value & Purpose |
+|-------|------|----------|-----------------|
+| `step_type` | String | Yes | Choose one: `graph_step` (draw function image, axes, moving/fixed/zero point animations) or `simplify/normal` (text algebraic derivation only, no image) |
+| `step_name` | String | No | Step subheading, temporary popup text at top |
+| `step_detail` | String | No | Step supplementary explanation text, temporarily displayed on left side |
+| `content` | String | No | LaTeX formula, this step shows mathematical expressions |
+| `algebraic_expression` | String | No | Backup formula, use `algebraic_expression` automatically when `content` is empty |
+| `fade_out` | Boolean | Only `graph_step` required | `true`: clear all images after step ends; `false`: images remain overlapping for next step |
+| `clear_graph` | Boolean | Only `graph` required | `true`: clear residual image before rendering new one; `false`: superimpose new and old function curves |
+| `graph` | Array [Object] | Only `graph_step` required | Array of function image configurations, 1 object = 1 function curve |
+
+---
+
+## **IV. Complete Function Configuration Fields for graph_object (Core Image Configuration in graph_step)**
+
+The `graph` array contains every object representing an independent function, supporting static points, two types of moving points, and automatic drawing of coordinate axis intersections:
+
+**Example:**
+```json
+"graph": [
+  {
+    "function": "abs(x**2 - 4)",
+    "variables": {},
+    "x_range": [-4, 4],
+    "color": "BLUE",
+    "show_axis_intersections": true,
+    "function_points": [fixed point configuration],
+    "moving_axis_point": [coordinate axis movement point configuration],
+    "moving_function_point": [curve movement point configuration]
+  }
+]
+```
+
+---
+
+### **4.1 Basic Function Fields**
+
+| Field | Type | Required | Rules |
+|-------|------|----------|-------|
+| `function` | String | Yes | Function expression, x is independent variable, multiple variables written as `a+2x` format |
+| `variables` | Object | Yes | Variable animation configuration, no variables = empty `{}` |
+| Structure | `{"a":{"start":0,"end":3,"run_time":2}}` | - | `start` = initial value, `end` = animation endpoint, `run` = animation duration |
+| `x_range` | Array [number, number] | Yes | Function x-axis plotting range [minimum, maximum] |
+| `color` | String | No | Manim built-in colors: `BLUE/RED/GREEN/YELLOW/PURPLE`, default `BLUE` |
+| `show_axis_intersections` | Boolean | No | `true` automatically computes zeros, y-axis intercepts, draws yellow dot + coordinate axis dashed line annotation |
+
+#### **4.2 Static Fixed Point `function_points`**
+Array of each object represents a fixed marker point on curve:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `x` | Number | Yes | Fixed point's x-coordinate, program automatically calculates corresponding y-value |
+| `label` | String | No | LaTeX label next to point, empty means just draw dot, no text |
+
+#### **4.3 Coordinate Axis Movement Point `moving_axis_point`**
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `axis` | String | Yes | Only `x` or `y`, represents movement on which axis |
+| `start` | Number | Yes | Animation starting coordinate |
+| `end` | Number | Yes | Animation ending coordinate |
+| `run_time` | Number | Yes | Total movement animation duration in seconds |
+| `label` | String | No | Text label next to moving point |
+
+#### **4.4 Curve Movement Point `moving_function_point`** (Core Animation)
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `x_start` | Number | Yes | Moving point's initial x-coordinate, automatically matches curve y-value |
+| `x_end` | Number | Yes | Moving point's ending x-coordinate, slides along curve to that position |
+| `run_time` | Number | Yes | Sliding animation duration in seconds |
+| `label` | String | No | LaTeX annotation text next to moving point |
+
+---
+
+## **V. Two Complete JSON Templates for Steps (Copy and Modify Directly)**
+
+### **Template 1: Graph Step with Function Image `graph_step` (Most Common)**
+```json
+{
+  "step_type": "graph_step",
+  "step_name": "Quadratic Absolute Value Function Image Demonstration",
+  "step_detail": "Draw f(x)=|x²-2| and demonstrate point M sliding",
+  "content": "f(x) = |x^2 - 2|",
+  "fade_out": true,
+  "clear_graph": true,
+  "graph": [
+    {
+      "function": "abs(x**2 - 2)",
+      "variables": {},
+      "x_range": [-4, 4],
+      "color": "BLUE",
+      "show_axis_intersections": true,
+      "function_points": [{"x": 1, "label": "P"}],
+      "moving_axis_point": [],
+      "moving_function_point": [
+        {
+          "x_start": -3,
+          "x_end": 3,
+          "run_time": 4,
+          "label": "M"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### **Template 2: Pure Algebraic Text Step `simplify/normal` (No Image)**
+```json
+{
+  "step_type": "simplify",
+  "step_name": "Simplify Equation",
+  "step_detail": "Move terms and combine like terms",
+  "content": "x^2 - 2 = 1",
+  "algebraic_expression": "x^2 = 3"
+}
+```
+
+---
+
+## **VI. Animation Rendering Behavior Rules (Must Consider When Writing JSON)**
+
+### **Playback Order**
+1. **Draw coordinate axes** (exclusive to `graph_step`)
+2. **Create function curves sequentially**
+3. **Draw zero points, static fixed points**
+4. **Play all moving point sliding animations** (axis-moving and curve-moving points execute in sync)
+5. **Wait for delay**, then decide based on `fade_out` whether to clear all images
+
+### **Image Overlap Control**
+- Multiple consecutive `graph_step`: If previous `fade_out: false` + current `clear_graph: false`, you can compare multiple curves on same canvas
+- Standard single-step single image configuration: `fade_out: true`, `clear_graph: true`, completely resolves issues of curves suddenly disappearing, layer covering problems
+
+### **Export Script Synchronization Rules**
+When executing `python 0-0-4.py yourjson --export`, the program will generate independent py rendering files for each `graph_step` based on JSON content. The fade_out, moving point, and coordinate axis logic remains consistent with JSON configuration, rendering single-file independently with no conflicts.
+
+---
+
+## **VII. Content Not Allowed (Violations Will Cause Immediate Error)**
+
+| Forbidden Content | Description |
+|-------------------|-------------|
+| Math expression `^` for exponent | Must use `**`; cannot write `2^2` |
+| Multiplication `*` omitted | `2x` must be written as `2*x` |
+| Multiple variable names in `variables` | Only single English letter allowed |
+| `moving_axis_point`'s `axis` field | Must be `x` or `y`, no other characters |
+| Backslash in LaTeX | Do not escape as `\\^2`; write directly `x^2` |
+| Boolean values | Must lowercase: `true/false`, not `True/False` |
+| Extra comma at array end | JSON doesn't support trailing commas |
+| Expression cannot support piecewise functions, custom complex functions | Only built-in math functions allowed |
+| `color` field | Cannot use RGB numbers, must use Manim built-in English color constants |
+
+---
+
+## **VIII. Output Requirements (Output Format for AI Agent)**
+
+**Output only complete runnable JSON text**, no explanatory notes, comments, or extra text outside code blocks;
+
+**Strictly follow solution order** for `solve_steps` array;
+
+**Multiple functions in same `graph` array**: add objects automatically for same canvas rendering;
+
+**If text derivation + image needed**: split into two steps: first `simplify` for text, then `graph_step` for image steps;
+
+**Final self-check**: Verify all fields complete, no syntax errors, mathematical expressions conform to specifications.
