@@ -3,8 +3,8 @@ A tool translating algebra problems to Manim videos using natural languages.
 
 ## Introduction 
 
-  It`s a tool uese ai to solve and generate json discribtions ,which can be used to render aligned videos.
-This tool only requires LLM api keys.
+  It`s a tool using AI to solve and generate JSON descriptions, which can be used to render aligned videos.
+This tool only requires LLM API keys.
 
 ## effects
   <img width="554" height="391" alt="屏幕截图 2026-07-10 132356" src="https://github.com/user-attachments/assets/d26bd947-45a6-4d6c-9664-2cb26bb7a88b" />
