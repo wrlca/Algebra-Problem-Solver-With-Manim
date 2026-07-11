@@ -12,8 +12,8 @@ This tool only requires LLM API keys.
   
 https://github.com/user-attachments/assets/3c715cea-8a92-4938-8d22-0535588f53cc
 
-## Somethings can be imporved further
-  Generation might be too slow, and the tool is in a early version.
+## Somethings can be improved further
+  Generation might be too slow, and the tool is still an early version.
   But the author may not have enough time to imporve it.
 
 ## License & Dependency Statement
