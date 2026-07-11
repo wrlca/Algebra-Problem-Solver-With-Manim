@@ -14,7 +14,7 @@ https://github.com/user-attachments/assets/3c715cea-8a92-4938-8d22-0535588f53cc
 
 ## Somethings can be improved further
   Generation might be too slow, and the tool is still an early version.
-  But the author may not have enough time to imporve it.
+  But the author may not have enough time to improve it.
 
 ## License & Dependency Statement
   This project code is released under the MIT License (see LICENSE file).
