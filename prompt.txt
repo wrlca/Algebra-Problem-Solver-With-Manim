@@ -198,7 +198,7 @@ When executing `python 0-0-4.py yourjson --export`, the program will generate in
 
 ---
 
-## **VIII. Output Requirements (Output Format for AI Agent)**
+## **VIII. Output Requirements**
 
 **Output only complete runnable JSON text**, no explanatory notes, comments, or extra text outside code blocks;
 
