@@ -3,23 +3,22 @@ A tool translating algebra problems to Manim videos using natural languages.
 
 ## Introduction 
 
-  It`s a tool using AI to solve and generate JSON descriptions, which can be used to render aligned videos.
-This tool only requires LLM API keys.
+  It's a tool using AI to solve and generate JSON descriptions, which can be used to render aligned videos. This tool only requires LLM API keys.
 
-## effects
+## Effects
   <img width="554" height="391" alt="屏幕截图 2026-07-10 132356" src="https://github.com/user-attachments/assets/d26bd947-45a6-4d6c-9664-2cb26bb7a88b" />
 
   
 https://github.com/user-attachments/assets/3c715cea-8a92-4938-8d22-0535588f53cc
 
-## Somethings can be improved further
+## Something can be improved further
   Generation might be too slow, and the tool is still an early version.
   But the author may not have enough time to improve it.
 
 ## License & Dependency Statement
-  This project code is released under the MIT License (see LICENSE file).
+  This project's source code is released under the MIT License (see LICENSE file).
   Core dependency: Manim Community Edition (manim-ce), which is distributed under the MIT License.
-  This project only calls Manim as a third-party library, does not modify the source code of Manim.
+  This project only calls Manim as a third-party library. It does not modify the source code of Manim.
 
 ## Install 
   ```bush
